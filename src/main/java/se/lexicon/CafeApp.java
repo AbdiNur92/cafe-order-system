@@ -23,6 +23,9 @@ public class CafeApp {
         };
     }
     static void printMenu() {
+        String name = IO.readln("Welcome! What is your name? ");
+        IO.println("Hi " + name + "! Here is our menu:");
+        IO.println();
         IO.println("=".repeat(30));
         IO.println("       Lexicon Cafe");
         IO.println("=".repeat(30));
@@ -30,6 +33,10 @@ public class CafeApp {
             IO.println(String.format(Locale.US, "%d. %-17s%.2f SEK", i, getItemName(i), getPrice(i)));
         }
         IO.println("=".repeat(30));
+        IO.println();
+        int number = Integer.parseInt(IO.readln("Enter item number (1-5): "));
+        int quantity = Integer.parseInt(IO.readln("How many? "));
+        boolean isMember = IO.readln("Loyalty member? (yes/no): ").equalsIgnoreCase("yes");
     }
 
 
