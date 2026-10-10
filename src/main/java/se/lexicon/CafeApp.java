@@ -32,12 +32,16 @@ public class CafeApp {
         IO.println("=".repeat(30));
         IO.println();
     }
-    static void printReceipt(String name, String itemName, int quantity) {
+    static void printReceipt(String name, String itemName, int quantity, double subtotal) {
         IO.println("=".repeat(30));
         IO.println("      LEXICON CAFE");
         IO.println("=".repeat(30));
         IO.println("Customer  : " + name);
         IO.println("Item      : " + itemName + " x " + quantity);
+        IO.println(String.format(Locale.US, "Subtotal  : %.2f SEK", subtotal));
+    }
+    static double calculateSubtotal(double unitPrice, int quantity) {
+        return unitPrice * quantity;
     }
 
 
@@ -63,9 +67,9 @@ public class CafeApp {
         int item = Integer.parseInt(IO.readln("Enter item number (1-5): "));
         int quantity = Integer.parseInt(IO.readln("How many? "));
         boolean isMember = IO.readln("Loyalty member? (yes/no): ").equalsIgnoreCase("yes");
-
+        double subtotal = calculateSubtotal(getPrice(item), quantity);
         CafeApp.printMenu();
         IO.println();
-        printReceipt(name, getItemName(item), quantity);
+        printReceipt(name, getItemName(item), quantity, subtotal);
     }
 }
