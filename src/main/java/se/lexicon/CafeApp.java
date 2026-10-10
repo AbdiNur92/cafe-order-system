@@ -23,9 +23,6 @@ public class CafeApp {
         };
     }
     static void printMenu() {
-        String name = IO.readln("Welcome! What is your name? ");
-        IO.println("Hi " + name + "! Here is our menu:");
-        IO.println();
         IO.println("=".repeat(30));
         IO.println("       Lexicon Cafe");
         IO.println("=".repeat(30));
@@ -34,11 +31,14 @@ public class CafeApp {
         }
         IO.println("=".repeat(30));
         IO.println();
-        int number = Integer.parseInt(IO.readln("Enter item number (1-5): "));
-        int quantity = Integer.parseInt(IO.readln("How many? "));
-        boolean isMember = IO.readln("Loyalty member? (yes/no): ").equalsIgnoreCase("yes");
     }
-
+    static void printReceipt(String name, String itemName, int quantity) {
+        IO.println("=".repeat(30));
+        IO.println("      LEXICON CAFE");
+        IO.println("=".repeat(30));
+        IO.println("Customer  : " + name);
+        IO.println("Item      : " + itemName + " x " + quantity);
+    }
 
 
     void main() {
@@ -54,7 +54,18 @@ public class CafeApp {
         // 7. Amount after discount = subtotal - discount  -> afterDiscount(subtotal, discount)
         // 8. VAT = 12% of the amount after discount       -> calculateVat(afterDiscount)
         // 9. Total = amount after discount + VAT          -> calculateTotal(afterDiscount, vat)
-        // 10. Print the receipt                           -> printReceipt(...)
+        // 10. Print the receipt
+        // -> printReceipt(...)
+        String name = IO.readln("Welcome! What is your name? ");
+        IO.println("Hi " + name + "! Here is our menu:");
+        IO.println();
+
+        int item = Integer.parseInt(IO.readln("Enter item number (1-5): "));
+        int quantity = Integer.parseInt(IO.readln("How many? "));
+        boolean isMember = IO.readln("Loyalty member? (yes/no): ").equalsIgnoreCase("yes");
+
         CafeApp.printMenu();
+        IO.println();
+        printReceipt(name, getItemName(item), quantity);
     }
 }
