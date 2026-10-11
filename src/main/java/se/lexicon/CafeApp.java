@@ -32,16 +32,22 @@ public class CafeApp {
         IO.println("=".repeat(30));
         IO.println();
     }
-    static void printReceipt(String name, String itemName, int quantity, double subtotal) {
+    static void printReceipt(String name, String itemName, int quantity, double subtotal, double discount) {
         IO.println("=".repeat(30));
         IO.println("      LEXICON CAFE");
         IO.println("=".repeat(30));
         IO.println("Customer  : " + name);
         IO.println("Item      : " + itemName + " x " + quantity);
         IO.println(String.format(Locale.US, "Subtotal  : %.2f SEK", subtotal));
+        if (discount > 0) {IO.println(String.format(Locale.US, "Discount  : -%.2f SEK", discount));}
     }
     static double calculateSubtotal(double unitPrice, int quantity) {
         return unitPrice * quantity;
+    }
+    static double calculateDiscount(double subtotal, boolean isMember) {
+        if (isMember) {return subtotal * 0.15;}
+        else if (subtotal > 150) {return subtotal * 0.10;}
+        else { return 0; }
     }
 
 
@@ -60,16 +66,22 @@ public class CafeApp {
         // 9. Total = amount after discount + VAT          -> calculateTotal(afterDiscount, vat)
         // 10. Print the receipt
         // -> printReceipt(...)
+
+
+
+
         String name = IO.readln("Welcome! What is your name? ");
         IO.println("Hi " + name + "! Here is our menu:");
         IO.println();
-
+        printMenu();
         int item = Integer.parseInt(IO.readln("Enter item number (1-5): "));
         int quantity = Integer.parseInt(IO.readln("How many? "));
         boolean isMember = IO.readln("Loyalty member? (yes/no): ").equalsIgnoreCase("yes");
         double subtotal = calculateSubtotal(getPrice(item), quantity);
-        CafeApp.printMenu();
+        double discount = calculateDiscount(subtotal, isMember);
         IO.println();
-        printReceipt(name, getItemName(item), quantity, subtotal);
+        printReceipt(name, getItemName(item), quantity, subtotal, discount);
+
+
     }
 }
