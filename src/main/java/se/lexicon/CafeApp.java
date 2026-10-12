@@ -32,7 +32,7 @@ public class CafeApp {
         IO.println("=".repeat(30));
         IO.println();
     }
-    static void printReceipt(String name, String itemName, int quantity, double subtotal, double discount) {
+    static void printReceipt(String name, String itemName, int quantity, double subtotal, double discount, double vat, double total) {
         IO.println("=".repeat(30));
         IO.println("      LEXICON CAFE");
         IO.println("=".repeat(30));
@@ -40,6 +40,14 @@ public class CafeApp {
         IO.println("Item      : " + itemName + " x " + quantity);
         IO.println(String.format(Locale.US, "Subtotal  : %.2f SEK", subtotal));
         if (discount > 0) {IO.println(String.format(Locale.US, "Discount  : -%.2f SEK", discount));}
+        IO.println(String.format(Locale.US, "VAT       : %.2f SEK", vat));
+        IO.println("-".repeat(30));
+        IO.println(String.format(Locale.US, "TOTAL     : %.2f SEK", total));
+        IO.println(("=".repeat(30)));
+        IO.println("   Thank you, " + name + "!");
+        IO.println("   See you next time.");
+        IO.println("=".repeat(30));
+
     }
     static double calculateSubtotal(double unitPrice, int quantity) {
         return unitPrice * quantity;
@@ -48,6 +56,12 @@ public class CafeApp {
         if (isMember) {return subtotal * 0.15;}
         else if (subtotal > 150) {return subtotal * 0.10;}
         else { return 0; }
+    }
+    static double calculateVAT(double subtotal, double discount) {
+        return (subtotal - discount) * 0.12;
+    }
+    static double calculateTotal(double subtotal, double discount, double vat) {
+        return subtotal - discount + vat;
     }
 
 
@@ -79,8 +93,10 @@ public class CafeApp {
         boolean isMember = IO.readln("Loyalty member? (yes/no): ").equalsIgnoreCase("yes");
         double subtotal = calculateSubtotal(getPrice(item), quantity);
         double discount = calculateDiscount(subtotal, isMember);
+        double vat = calculateVAT(subtotal, discount);
+        double total = calculateTotal(subtotal, discount, vat);
         IO.println();
-        printReceipt(name, getItemName(item), quantity, subtotal, discount);
+        printReceipt(name, getItemName(item), quantity, subtotal, discount, vat, total);
 
 
     }
