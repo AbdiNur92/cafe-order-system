@@ -2,6 +2,12 @@ package se.lexicon;
 import java.util.Locale;
 
 public class CafeApp {
+
+    static final double LOYALTY_DISCOUNT = 0.15;
+    static final double BIG_ORDER_DISCOUNT = 0.10;
+    static final double BIG_ORDER_LIMIT = 150.0;
+    static final double VAT_RATE = 0.12;
+
     static String getItemName(int item) {
         return switch (item) {
             case 1 -> "Espresso";
@@ -53,12 +59,12 @@ public class CafeApp {
         return unitPrice * quantity;
     }
     static double calculateDiscount(double subtotal, boolean isMember) {
-        if (isMember) {return subtotal * 0.15;}
-        else if (subtotal > 150) {return subtotal * 0.10;}
+        if (isMember) {return subtotal * LOYALTY_DISCOUNT;}
+        else if (subtotal > BIG_ORDER_LIMIT) {return subtotal * BIG_ORDER_DISCOUNT;}
         else { return 0; }
     }
     static double calculateVAT(double subtotal, double discount) {
-        return (subtotal - discount) * 0.12;
+        return (subtotal - discount) * VAT_RATE;
     }
     static double calculateTotal(double subtotal, double discount, double vat) {
         return subtotal - discount + vat;
@@ -83,18 +89,24 @@ public class CafeApp {
 
 
 
-
+        // read the name, greet, printMenu()
         String name = IO.readln("Welcome! What is your name? ");
         IO.println("Hi " + name + "! Here is our menu:");
         IO.println();
         printMenu();
+        // read item, quantity, membership
         int item = Integer.parseInt(IO.readln("Enter item number (1-5): "));
         int quantity = Integer.parseInt(IO.readln("How many? "));
         boolean isMember = IO.readln("Loyalty member? (yes/no): ").equalsIgnoreCase("yes");
+        // subtotal
         double subtotal = calculateSubtotal(getPrice(item), quantity);
+        // discount
         double discount = calculateDiscount(subtotal, isMember);
+        // vat
         double vat = calculateVAT(subtotal, discount);
+        //total
         double total = calculateTotal(subtotal, discount, vat);
+        // print receipt
         IO.println();
         printReceipt(name, getItemName(item), quantity, subtotal, discount, vat, total);
 
